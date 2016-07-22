@@ -1,4 +1,4 @@
-# Content Management System for Laravel- Auth Component
+# CMS for Laravel - Auth Component
 
 Authentication component for the CMS.
 
