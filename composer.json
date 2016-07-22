@@ -1,0 +1,38 @@
+{
+    "name": "czim/laravel-cms-auth",
+    "description": "Laravel CMS: Authentication Component",
+    "authors": [
+        {
+            "name": "Coen Zimmerman",
+            "email": "coen@pixelindustries.com"
+        }
+    ],
+    "keywords": [ "cms", "laravel", "authentication" ],
+    "homepage": "https://github.com/czim",
+    "require": {
+        "php": ">=5.5.9",
+        "czim/laravel-cms-core": "^1.0",
+        "cartalyst/sentinel": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.*",
+        "mockery/mockery": "0.9.*",
+        "scrutinizer/ocular": "~1.1",
+        "orchestra/testbench": "~3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Czim\\CmsAuth\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Czim\\CmsAuth\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
