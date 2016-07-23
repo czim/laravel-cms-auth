@@ -88,7 +88,7 @@ class CmsAuthServiceProvider extends ServiceProvider
     protected function publishMigrations()
     {
         $this->publishes([
-            realpath(dirname(__DIR__) . '/../migrations') => $this->getMigrationPath(),
+            realpath(dirname(__DIR__) . '/../migrations/sentinel') => $this->getMigrationPath(),
         ], 'migrations');
 
         return $this;
