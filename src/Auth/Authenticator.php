@@ -2,7 +2,6 @@
 namespace Czim\CmsAuth\Auth;
 
 use Cartalyst\Sentinel\Users\UserInterface as CartalystUserInterface;
-use Illuminate\Support\Collection;
 use Czim\CmsAuth\Sentinel\Roles\EloquentRole;
 use Czim\CmsAuth\Sentinel\Sentinel;
 use Czim\CmsAuth\Sentinel\Users\EloquentUser;
@@ -17,6 +16,7 @@ use Czim\CmsCore\Events\Auth\CmsUserPermissionsChanged;
 class Authenticator implements AuthenticatorInterface
 {
     use AuthRoutingTrait,
+        AuthApiRoutingTrait,
         DelegatesToAuthRepositoryTrait;
 
     /**
@@ -98,6 +98,68 @@ class Authenticator implements AuthenticatorInterface
         }
 
         event( new CmsUserLoggedIn($user) );
+        return true;
+    }
+
+    /**
+     * Performs stateless login.
+     *
+     * @param string $username
+     * @param string $password
+     * @return bool
+     */
+    public function stateless($username, $password)
+    {
+        $user = $this->sentinel->stateless(
+            [
+                'email'    => $username,
+                'password' => $password,
+            ]
+        );
+
+        if ( ! ($user instanceof CartalystUserInterface)) {
+            return false;
+        }
+
+        event( new CmsUserLoggedIn($user, true) );
+        return true;
+    }
+
+    /**
+     * Forces a user to be logged in without credentials verification.
+     *
+     * @param UserInterface|CartalystUserInterface $user
+     * @param bool                                 $remember
+     * @return bool
+     */
+    public function forceUser(UserInterface $user, $remember = true)
+    {
+        $user = $this->sentinel->authenticate($user, $remember);
+
+        if ( ! ($user instanceof CartalystUserInterface)) {
+            return false;
+        }
+
+        event( new CmsUserLoggedIn($user, false, true) );
+        return true;
+    }
+
+    /**
+     * Forces a user to be logged in without credentials verification,
+     * without persistence, and without marking it as a login.
+     *
+     * @param UserInterface|CartalystUserInterface $user
+     * @return bool
+     */
+    public function forceUserStateless(UserInterface $user)
+    {
+        $user = $this->sentinel->authenticate($user, false, false);
+
+        if ( ! ($user instanceof CartalystUserInterface)) {
+            return false;
+        }
+
+        event( new CmsUserLoggedIn($user, true, true) );
         return true;
     }
 

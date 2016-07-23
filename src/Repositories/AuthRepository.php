@@ -40,6 +40,17 @@ class AuthRepository implements AuthRepositoryInterface
 
 
     /**
+     * Returns a user by their ID, if it exists.
+     *
+     * @param mixed $id
+     * @return UserInterface|EloquentUser|null
+     */
+    public function getUserById($id)
+    {
+        return $this->sentinel->getUserRepository()->findById($id);
+    }
+
+    /**
      * Returns all CMS users.
      *
      * @param bool $withAdmin include superadmins
