@@ -11,7 +11,7 @@ for API authentication, slightly modified to allow it to be used inobtrusively w
 ### Issueing tokens
 
 Logging in, or getting issued an access token may be done using either the `password` or `refresh_token` grant.
-Signing in a user by their credentials is done by sending a `POST` with the following data:
+Signing in a user by their credentials is done by sending a `POST` request to `/cms-api/auth/issue` with the following data:
 
 ```json
 {
@@ -40,7 +40,8 @@ The server may respond with `422` validation errors for these requests.
 
 Logging out, or revoking tokens, is implemented roughly according to [RFC7009](https://tools.ietf.org/html/rfc7009).
 
-Send a `POST` request, with a valid Authorization header, with the following data, to revoke your access token:
+Send a `POST` request to `/cms-api/auth/revoke`, with a valid Authorization header, with the following data, 
+to revoke your access token:
 
 ```json
 {
