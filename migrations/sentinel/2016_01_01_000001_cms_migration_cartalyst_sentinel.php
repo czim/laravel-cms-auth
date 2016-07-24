@@ -12,25 +12,44 @@ class CmsMigrationCartalystSentinel extends CmsMigration
      */
     public function up()
     {
+        Schema::create($this->prefixCmsTable('users'), function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('email');
+            $table->string('password');
+            $table->text('permissions')->nullable();
+            $table->timestamp('last_login')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->boolean('is_superadmin')->default(false);
+            $table->nullableTimestamps();
+
+            $table->unique('email');
+        });
+
         Schema::create($this->prefixCmsTable('activations'), function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('code');
             $table->boolean('completed')->default(0);
             $table->timestamp('completed_at')->nullable();
-            $table->timestamps();
+            $table->nullableTimestamps();
 
-            $table->engine = 'InnoDB';
+            $table->foreign('user_id', 'fk_' . $this->prefixCmsTable('activations_users1'))
+                  ->references('id')->on($this->prefixCmsTable('users'))
+                  ->onDelete('cascade');
         });
 
         Schema::create($this->prefixCmsTable('persistences'), function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('code');
-            $table->timestamps();
+            $table->nullableTimestamps();
 
-            $table->engine = 'InnoDB';
             $table->unique('code');
+
+            $table->foreign('user_id', 'fk_' . $this->prefixCmsTable('persistences_users1'))
+                  ->references('id')->on($this->prefixCmsTable('users'))
+                  ->onDelete('cascade');
         });
 
         Schema::create($this->prefixCmsTable('reminders'), function (Blueprint $table) {
@@ -39,7 +58,11 @@ class CmsMigrationCartalystSentinel extends CmsMigration
             $table->string('code');
             $table->boolean('completed')->default(0);
             $table->timestamp('completed_at')->nullable();
-            $table->timestamps();
+            $table->nullableTimestamps();
+
+            $table->foreign('user_id', 'fk_' . $this->prefixCmsTable('reminders_users1'))
+                  ->references('id')->on($this->prefixCmsTable('users'))
+                  ->onDelete('cascade');
         });
 
         Schema::create($this->prefixCmsTable('roles'), function (Blueprint $table) {
@@ -47,9 +70,8 @@ class CmsMigrationCartalystSentinel extends CmsMigration
             $table->string('slug');
             $table->string('name');
             $table->text('permissions')->nullable();
-            $table->timestamps();
+            $table->nullableTimestamps();
 
-            $table->engine = 'InnoDB';
             $table->unique('slug');
         });
 
@@ -60,6 +82,14 @@ class CmsMigrationCartalystSentinel extends CmsMigration
 
             $table->engine = 'InnoDB';
             $table->primary(['user_id', 'role_id']);
+
+            $table->foreign('user_id', 'fk_' . $this->prefixCmsTable('role_users_users1'))
+                  ->references('id')->on($this->prefixCmsTable('users'))
+                  ->onDelete('cascade');
+
+            $table->foreign('role_id', 'fk_' . $this->prefixCmsTable('role_users_roles1'))
+                  ->references('id')->on($this->prefixCmsTable('roles'))
+                  ->onDelete('cascade');
         });
 
         Schema::create($this->prefixCmsTable('throttle'), function (Blueprint $table) {
@@ -67,24 +97,13 @@ class CmsMigrationCartalystSentinel extends CmsMigration
             $table->integer('user_id')->unsigned()->nullable();
             $table->string('type');
             $table->string('ip')->nullable();
-            $table->timestamps();
+            $table->nullableTimestamps();
 
-            $table->engine = 'InnoDB';
             $table->index('user_id');
-        });
 
-        Schema::create($this->prefixCmsTable('users'), function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('email');
-            $table->string('password');
-            $table->text('permissions')->nullable();
-            $table->timestamp('last_login')->nullable();
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
-            $table->timestamps();
-
-            $table->engine = 'InnoDB';
-            $table->unique('email');
+            $table->foreign('user_id', 'fk_' . $this->prefixCmsTable('throttle_users1'))
+                  ->references('id')->on($this->prefixCmsTable('users'))
+                  ->onDelete('cascade');
         });
     }
 
@@ -98,9 +117,9 @@ class CmsMigrationCartalystSentinel extends CmsMigration
         Schema::drop($this->prefixCmsTable('activations'));
         Schema::drop($this->prefixCmsTable('persistences'));
         Schema::drop($this->prefixCmsTable('reminders'));
-        Schema::drop($this->prefixCmsTable('roles'));
         Schema::drop($this->prefixCmsTable('role_users'));
         Schema::drop($this->prefixCmsTable('throttle'));
+        Schema::drop($this->prefixCmsTable('roles'));
         Schema::drop($this->prefixCmsTable('users'));
     }
 
