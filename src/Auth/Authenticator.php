@@ -121,6 +121,9 @@ class Authenticator implements AuthenticatorInterface
             return false;
         }
 
+        // This is still a login, and while we don't want persistence, we do want it to be recorded
+        $this->sentinel->getUserRepository()->recordLogin($user);
+
         event( new CmsUserLoggedIn($user, true) );
         return true;
     }
