@@ -24,7 +24,7 @@ class OAuthMiddleware extends LucaDegasperiOAuthMiddleware
      */
     public function handle($request, Closure $next, $scopesString = null)
     {
-        if ($this->getCmsCore()->apiConfig('disable-local-auth') && app()->isLocal()) {
+        if ($this->getCmsCore()->apiConfig('debug.disable-local-auth') && app()->isLocal()) {
             return $next($request);
         }
 

@@ -50,7 +50,7 @@ class OAuthUserOwnerMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if ($this->core->apiConfig('disable-local-auth') && app()->isLocal()) {
+        if ($this->core->apiConfig('debug.disable-local-auth') && app()->isLocal()) {
 
             $this->loginDebugUser($request);
 
@@ -80,7 +80,7 @@ class OAuthUserOwnerMiddleware
     protected function loginDebugUser($request)
     {
         // Allow faking users through the debug-user header
-        $debugUserHeader = $this->core->apiConfig('debug-user-header');
+        $debugUserHeader = $this->core->apiConfig('debug.debug-user-header');
 
         if ( ! $debugUserHeader || ! ($userId = $request->header($debugUserHeader))) {
             return;
