@@ -1,6 +1,7 @@
 <?php
 namespace Czim\CmsAuth\Providers\Api;
 
+use Czim\CmsAuth\Console\Commands\CreateOAuthClient;
 use Czim\CmsCore\Contracts\Core\CoreInterface;
 use Czim\CmsCore\Support\Enums\Component;
 use Illuminate\Support\ServiceProvider;
@@ -28,9 +29,25 @@ class OAuthSetupServiceProvider extends ServiceProvider
     {
         $this->core = app(Component::CORE);
 
-        $this->publishMigrations();
+        $this->registerCommands()
+             ->publishMigrations();
     }
 
+    /**
+     * Register OAuth CMS commands
+     *
+     * @return $this
+     */
+    protected function registerCommands()
+    {
+        $this->app->singleton('cms.commands.api.oauth-client-create', CreateOAuthClient::class);
+
+        $this->commands([
+            'cms.commands.api.oauth-client-create',
+        ]);
+
+        return $this;
+    }
 
     /**
      * @return $this

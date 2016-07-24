@@ -54,13 +54,8 @@ class CmsAuthServiceProvider extends ServiceProvider
      */
     protected function registerCommands()
     {
-        $this->app->singleton('cms.commands.user-create', function(Application $app) {
-            return $app->make(CreateUser::class);
-        });
-
-        $this->app->singleton('cms.commands.user-delete', function(Application $app) {
-            return $app->make(DeleteUser::class);
-        });
+        $this->app->singleton('cms.commands.user-create', CreateUser::class);
+        $this->app->singleton('cms.commands.user-delete', DeleteUser::class);
 
         $this->commands([
             'cms.commands.user-create',
