@@ -406,7 +406,7 @@ class Authenticator implements AuthenticatorInterface
 
         $this->sentinel->getRoleRepository()->createModel()
              ->create([
-                'name' => $this->convertRoleSlugToName($role),
+                'name' => $name ?: $this->convertRoleSlugToName($role),
                 'slug' => $role,
              ]);
 
