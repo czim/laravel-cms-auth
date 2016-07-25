@@ -52,6 +52,17 @@ class AuthRepository implements AuthRepositoryInterface
     }
 
     /**
+     * Returns a user by their username/email, if it exists.
+     *
+     * @param string $username
+     * @return UserInterface|null
+     */
+    public function getUserByUserName($username)
+    {
+        return $this->sentinel->getUserRepository()->findByCredentials([ 'email' => $username ]);
+    }
+
+    /**
      * Returns all CMS users.
      *
      * @param bool $withAdmin include superadmins

@@ -587,6 +587,46 @@ class Authenticator implements AuthenticatorInterface
     }
 
     /**
+     * Sets a new password for an existing CMS user.
+     *
+     * @param string $username
+     * @param string $password
+     * @return bool
+     */
+    public function updatePassword($username, $password)
+    {
+        /** @var UserInterface|EloquentUser $user */
+        $user = $this->sentinel->findByCredentials([ 'email' => $username ]);
+
+        if ( ! $user) {
+            return false;
+        }
+
+        return $this->sentinel->update($user, [ 'password' => $password ]) instanceof UserInterface;
+    }
+
+    /**
+     * Updates a CMS user's (extra) data.
+     *
+     * @param string $username
+     * @param array $data
+     * @return bool
+     */
+    public function updateUser($username, array $data)
+    {
+        /** @var UserInterface|EloquentUser $user */
+        $user = $this->sentinel->findByCredentials([ 'email' => $username ]);
+
+        if ( ! $user) {
+            return false;
+        }
+
+        $user->fill($data);
+
+        return $user->save();
+    }
+
+    /**
      * Converts a role slug to a displayable name
      *
      * @param string $slug

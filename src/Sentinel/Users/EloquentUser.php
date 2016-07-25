@@ -42,6 +42,11 @@ class EloquentUser extends CartalystEloquentUser implements CmsUserInterface
         'password',
     ];
 
+    protected $appends = [
+        'all_roles',
+        'all_permissions',
+    ];
+
     /**
      * The Eloquent roles model name.
      *
@@ -151,4 +156,43 @@ class EloquentUser extends CartalystEloquentUser implements CmsUserInterface
         return $this->can($permissions, true);
     }
 
+    /**
+     * Returns all roles for the user.
+     *
+     * @return string[]
+     */
+    public function getAllRoles()
+    {
+        return $this->roles()->pluck('slug')->toArray();
+    }
+
+    /**
+     * Returns all permissions for the user, whether by role or for the user itself.
+     *
+     * @return string[]
+     */
+    public function getAllPermissions()
+    {
+        return array_keys(array_filter($this->getPermissions()));
+    }
+
+    /**
+     * Getter for all_roles.
+     *
+     * @return string[]
+     */
+    public function getAllRolesAttribute()
+    {
+        return $this->getAllRoles();
+    }
+
+    /**
+     * Getter for all_permissions.
+     *
+     * @return string[]
+     */
+    public function getAllPermissionsAttribute()
+    {
+        return $this->getAllPermissions();
+    }
 }

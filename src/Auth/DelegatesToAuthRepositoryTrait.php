@@ -18,6 +18,17 @@ trait DelegatesToAuthRepositoryTrait
     }
 
     /**
+     * Returns a user by their username/email, if it exists.
+     *
+     * @param string $username
+     * @return UserInterface|null
+     */
+    public function getUserByUserName($username)
+    {
+        return $this->repository->getUserByUserName($username);
+    }
+
+    /**
      * Returns all CMS users.
      *
      * @param bool $withAdmin include superadmins
