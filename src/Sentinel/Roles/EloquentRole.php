@@ -13,4 +13,12 @@ class EloquentRole extends CartalystEloquentRole
 
     protected static $usersModel = EloquentUser::class;
 
+    /**
+     * {@inheritdoc}
+     */
+    public function users()
+    {
+        return $this->belongsToMany(static::$usersModel, $this->getCmsTablePrefix() . 'role_users', 'role_id', 'user_id')
+            ->withTimestamps();
+    }
 }
