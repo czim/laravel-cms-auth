@@ -1,6 +1,7 @@
 <?php
 namespace Czim\CmsAuth\Repositories;
 
+use Cartalyst\Sentinel\Roles\RoleInterface;
 use Illuminate\Support\Collection;
 use Czim\CmsAuth\Sentinel\Roles\EloquentRole;
 use Czim\CmsAuth\Sentinel\Sentinel;
@@ -214,4 +215,38 @@ class AuthRepository implements AuthRepositoryInterface
         return $user ?: false;
     }
 
+    /**
+     * Returns whether a given role exists.
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function roleExists($role)
+    {
+        return $this->sentinel->getRoleRepository()->findBySlug($role) instanceof RoleInterface;
+    }
+
+    /**
+     * Returns whether a role is currently used at all.
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function roleInUse($role)
+    {
+        return count($this->getUsersForRole($role, true)) > 0;
+    }
+
+    /**
+     * Returns whether a permission with the given (exact) name is currently used at all.
+     *
+     * Note that this CANNOT be used to look up permissions by wildcard (something.*).
+     *
+     * @param $permission
+     * @return bool
+     */
+    public function permissionInUse($permission)
+    {
+        return in_array($permission, $this->getAllPermissions());
+    }
 }

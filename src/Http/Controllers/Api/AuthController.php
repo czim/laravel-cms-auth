@@ -106,6 +106,7 @@ class AuthController extends Controller
 
         // Check if the related access token matches the current user's token
         $access = $this->authorizer->getAccessToken();
+
         if ( ! $access) {
             return;
         }

@@ -82,4 +82,39 @@ trait DelegatesToAuthRepositoryTrait
         return $this->repository->getAllPermissionsForUser($user);
     }
 
+    /**
+     * Returns whether a given role exists.
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function roleExists($role)
+    {
+        return $this->repository->roleExists($role);
+    }
+
+    /**
+     * Returns whether a role is currently used at all.
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function roleInUse($role)
+    {
+        return $this->repository->roleInUse($role);
+    }
+
+    /**
+     * Returns whether a permission with the given (exact) name is currently used at all.
+     *
+     * Note that this CANNOT be used to look up permissions by wildcard (something.*).
+     *
+     * @param $permission
+     * @return bool
+     */
+    public function permissionInUse($permission)
+    {
+        return $this->repository->permissionInUse($permission);
+    }
+
 }
