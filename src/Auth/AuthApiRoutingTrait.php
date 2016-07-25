@@ -16,7 +16,7 @@ trait AuthApiRoutingTrait
     public function getApiRouteLoginAction()
     {
         return [
-            'as'   => NamedRoute::API_AUTH_LOGIN,
+            'as'   => NamedRoute::AUTH_LOGIN,
             'uses' => AuthController::class . '@issueAccessToken',
         ];
     }
@@ -29,7 +29,7 @@ trait AuthApiRoutingTrait
     public function getApiRouteLogoutAction()
     {
         return [
-            'as'         => NamedRoute::API_AUTH_LOGOUT,
+            'as'         => NamedRoute::AUTH_LOGOUT,
             'middleware' => [
                 CmsMiddleware::API_AUTHENTICATED,
                 CmsMiddleware::API_AUTH_OWNER,
