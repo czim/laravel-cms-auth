@@ -1,6 +1,7 @@
 <?php
 namespace Czim\CmsAuth\Auth;
 
+use Czim\CmsCore\Contracts\Auth\RoleInterface;
 use Illuminate\Support\Collection;
 use Czim\CmsCore\Contracts\Auth\UserInterface;
 
@@ -91,6 +92,15 @@ trait DelegatesToAuthRepositoryTrait
     public function getAllPermissionsForUser($user)
     {
         return $this->repository->getAllPermissionsForUser($user);
+    }
+
+    /**
+     * @param string $role
+     * @return RoleInterface
+     */
+    public function getRole($role)
+    {
+        return $this->repository->getRole($role);
     }
 
     /**

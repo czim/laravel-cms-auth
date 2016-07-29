@@ -234,7 +234,7 @@ class AuthRepository implements AuthRepositoryInterface
      */
     public function roleExists($role)
     {
-        return $this->sentinel->getRoleRepository()->findBySlug($role) instanceof RoleInterface;
+        return $this->getRole($role) instanceof RoleInterface;
     }
 
     /**
@@ -246,6 +246,15 @@ class AuthRepository implements AuthRepositoryInterface
     public function roleInUse($role)
     {
         return count($this->getUsersForRole($role, true)) > 0;
+    }
+
+    /**
+     * @param string $role
+     * @return RoleInterface
+     */
+    public function getRole($role)
+    {
+        return $this->sentinel->getRoleRepository()->findBySlug($role);
     }
 
     /**
