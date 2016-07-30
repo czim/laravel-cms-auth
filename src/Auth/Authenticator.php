@@ -40,6 +40,18 @@ class Authenticator implements AuthenticatorInterface
         $this->repository = $repository;
     }
 
+
+    /**
+     * Returns Authenticator component version number.
+     *
+     * @return string
+     */
+    public function version()
+    {
+        return '0.0.1';
+    }
+
+
     /**
      * Returns whether any user is currently logged in.
      *
