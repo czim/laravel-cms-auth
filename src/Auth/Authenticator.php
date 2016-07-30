@@ -174,7 +174,7 @@ class Authenticator implements AuthenticatorInterface
     {
         $user = $this->sentinel->getUser();
 
-        if ( ! $user || ! $this->sentinel->logout()) {
+        if ( ! $user || ! $this->sentinel->logout($user, true)) {
             return false;
         }
 
