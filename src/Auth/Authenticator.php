@@ -288,7 +288,7 @@ class Authenticator implements AuthenticatorInterface
         $count = 0;
 
         foreach ($roles as $singleRole) {
-            $count += $this->assignSingleRole($singleRole, $user) ? 1 : 0;
+            $count += $this->unassignSingleRole($singleRole, $user) ? 1 : 0;
         }
 
         if ($count !== count($roles)) {
