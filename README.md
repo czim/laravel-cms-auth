@@ -3,6 +3,12 @@
 Authentication component for the CMS.
 
 
+## API Documentation
+
+The documentation for auth component API endpoints: 
+https://czim.github.io/laravel-cms-auth
+
+
 ## Authenticating with the CMS API
 
 This package uses [Luca Degasperi's OAuth2 Server package](https://github.com/lucadegasperi/oauth2-server-laravel)
