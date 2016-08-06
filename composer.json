@@ -11,8 +11,9 @@
     "homepage": "https://github.com/czim",
     "require": {
         "php": ">=5.5.9",
-        "czim/laravel-cms-core": "^1.0",
-        "cartalyst/sentinel": "^2.0"
+        "czim/laravel-cms-core": "^0.9.1",
+        "cartalyst/sentinel": "^2.0",
+        "lucadegasperi/oauth2-server-laravel": "^5.1"
     },
     "require-dev": {
         "phpunit/phpunit": "4.*",
@@ -27,7 +28,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Czim\\CmsAuth\\Test\\": "tests"
+            "Czim\\CmsAuth\\Test\\": "tests",
+            "Czim\\CmsCore\\Test\\": "vendor/czim/laravel-cms-core/tests"
         }
     },
     "scripts": {
