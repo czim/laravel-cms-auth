@@ -16,6 +16,15 @@ use Czim\CmsCore\Events\Auth\CmsUserPermissionsChanged;
 
 class Authenticator implements AuthenticatorInterface
 {
+
+    /**
+     * The CMS Authenticator version.
+     *
+     * @var string
+     */
+    const VERSION = '0.0.1';
+
+
     use AuthRoutingTrait,
         AuthApiRoutingTrait,
         DelegatesToAuthRepositoryTrait;
@@ -48,7 +57,7 @@ class Authenticator implements AuthenticatorInterface
      */
     public function version()
     {
-        return '0.0.1';
+        return static::VERSION;
     }
 
 
