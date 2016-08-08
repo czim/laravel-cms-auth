@@ -34,6 +34,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
         // Set up service providers for tests, excluding what is not part of this package
         $app['config']->set('cms-core.providers', [
+            \Czim\CmsCore\Providers\ModuleManagerServiceProvider::class,
             \Czim\CmsCore\Providers\LogServiceProvider::class,
             \Czim\CmsCore\Providers\RouteServiceProvider::class,
             \Czim\CmsCore\Providers\MiddlewareServiceProvider::class,
