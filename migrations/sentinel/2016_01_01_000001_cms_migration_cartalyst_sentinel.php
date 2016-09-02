@@ -80,7 +80,6 @@ class CmsMigrationCartalystSentinel extends CmsMigration
             $table->integer('role_id')->unsigned();
             $table->nullableTimestamps();
 
-            $table->engine = 'InnoDB';
             $table->primary(['user_id', 'role_id']);
 
             $table->foreign('user_id', 'fk_' . $this->prefixCmsTable('role_users_users1'))
