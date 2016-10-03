@@ -29,6 +29,8 @@ class AuthController extends Controller
      */
     public function showLoginForm()
     {
+        $this->storeIntendedUrl();
+
         return view($this->core->config('views.login'));
     }
 
@@ -38,7 +40,7 @@ class AuthController extends Controller
      * @todo enable throttling
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function login(Request $request)
     {
@@ -47,12 +49,13 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-
         if (
             $this->core->auth()
                 ->login($request->input('email'), $request->input('password'), $request->has('remember'))
         ) {
-            return redirect()->intended( $this->core->route(NamedRoute::HOME) );
+            return redirect()->intended(
+                $this->core->route(NamedRoute::HOME)
+            );
         }
 
         return redirect()->back()
@@ -67,13 +70,29 @@ class AuthController extends Controller
     /**
      * Log the user out of the application.
      *
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function logout()
     {
         $this->core->auth()->logout();
 
-        return redirect()->route( $this->core->prefixRoute(NamedRoute::AUTH_LOGIN) );
+        return redirect()->route(
+            $this->core->prefixRoute(NamedRoute::AUTH_LOGIN)
+        );
+    }
+
+    /**
+     * Stores the intended URL to redirect to after succesful login.
+     */
+    protected function storeIntendedUrl()
+    {
+        // Do not store the URL if it was the login itself
+        $previousUrl = url()->previous();
+        $loginUrl    = url()->route($this->core->prefixRoute(NamedRoute::AUTH_LOGIN));
+
+        if ($previousUrl == $loginUrl) return;
+
+        session()->put('url.intended', $previousUrl);
     }
 
 }
