@@ -8,7 +8,9 @@ use Czim\CmsCore\Support\Enums\Component;
 class CreateUser extends Command
 {
 
-    protected $signature = 'cms:user:create {username?} {password?} {--firstName=} {--lastName=}';
+    protected $signature = 'cms:user:create {username?} {password?} 
+                                {--firstName=} {--lastName=}
+                                {--admin : Whether this user should have unrestricted access}';
 
     protected $description = 'Create CMS user';
 
@@ -44,6 +46,11 @@ class CreateUser extends Command
 
         if ( ! $user) {
             $this->error('Failed to create user!');
+        }
+
+        if ($this->option('admin')) {
+            $user->is_superadmin = true;
+            $user->save();
         }
 
         $this->info('User created.');
