@@ -29,7 +29,6 @@ class CreateOAuthClient extends Command
      *
      * @param CoreInterface   $core
      * @param DatabaseManager $db
-     * @return mixed
      */
     public function handle(CoreInterface $core, DatabaseManager $db)
     {

@@ -7,7 +7,6 @@ use Czim\CmsAuth\Sentinel\Sentinel;
 use Czim\CmsAuth\Sentinel\Users\EloquentUser;
 use Czim\CmsCore\Contracts\Auth\AuthenticatorInterface;
 use Czim\CmsCore\Contracts\Auth\AuthRepositoryInterface;
-use Czim\CmsCore\Contracts\Auth\RoleInterface;
 use Czim\CmsCore\Contracts\Auth\UserInterface;
 use Czim\CmsCore\Events\Auth\CmsRolesChanged;
 use Czim\CmsCore\Events\Auth\CmsUserLoggedIn;
