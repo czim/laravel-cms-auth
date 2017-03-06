@@ -16,13 +16,13 @@ class DeleteUserCommandTest extends ConsoleTestCase
             'password' => \Hash::make('testing'),
         ]);
 
-        $this->seeInDatabase($this->prefixTable('users'), [ 'email' => 'test@test.com' ]);
+        $this->assertDatabaseHas($this->prefixTable('users'), [ 'email' => 'test@test.com' ]);
 
         $this->artisan('cms:user:delete', [
             'username' => 'test@test.com',
         ]);
 
-        $this->notSeeInDatabase($this->prefixTable('users'), [ 'email' => 'test@test.com' ]);
+        $this->assertDatabaseMissing($this->prefixTable('users'), [ 'email' => 'test@test.com' ]);
     }
 
     /**

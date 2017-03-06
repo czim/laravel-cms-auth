@@ -21,7 +21,7 @@ class CreateUserCommandTest extends ConsoleTestCase
             '--lastName'  => 'User',
         ]);
 
-        $this->seeInDatabase($this->prefixTable('users'), [
+        $this->assertDatabaseHas($this->prefixTable('users'), [
             'email'      => 'test@test.com',
             'first_name' => 'Test',
             'last_name'  => 'User',
