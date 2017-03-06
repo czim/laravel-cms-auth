@@ -1,6 +1,8 @@
 <?php
 namespace Czim\CmsAuth\Providers;
 
+use Cartalyst\Sentinel\Hashing\HasherInterface;
+use Cartalyst\Sentinel\Hashing\NativeHasher;
 use Cartalyst\Sentinel\Laravel\SentinelServiceProvider as CartalystSentinelServiceProvider;
 use Czim\CmsAuth\Sentinel\Repositories\IlluminateUserRepository;
 use Czim\CmsAuth\Sentinel\Sentinel;
@@ -101,7 +103,21 @@ class SentinelServiceProvider extends CartalystSentinelServiceProvider
                 forward_static_call_array([$users, 'setPermissionsClass'], [$permissions]);
             }
 
-            return app(IlluminateUserRepository::class, [ $app['sentinel.hasher'], $app['events'], $users ]);
+            return new IlluminateUserRepository($app['sentinel.hasher'], $app['events'], $users);
         });
+    }
+
+    /**
+     * Overrides parent so the HasherInterface is bound.
+     *
+     * {@inheritdoc}
+     */
+    protected function registerHasher()
+    {
+        $this->app->singleton('sentinel.hasher', function () {
+            return new NativeHasher;
+        });
+
+        $this->app->bind(HasherInterface::class, 'sentinel.hasher');
     }
 }
