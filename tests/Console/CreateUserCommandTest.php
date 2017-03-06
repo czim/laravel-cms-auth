@@ -19,7 +19,7 @@ class CreateUserCommandTest extends TestCase
             '--lastName'  => 'User',
         ]);
 
-        $this->seeInDatabase('cms_users', [
+        $this->assertDatabaseHas('cms_users', [
             'email'      => 'test@test.com',
             'first_name' => 'Test',
             'last_name'  => 'User',

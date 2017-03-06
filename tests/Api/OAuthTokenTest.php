@@ -16,7 +16,7 @@ class OAuthTokenTest extends ApiTestCase
      */
     function it_issues_a_token_for_a_valid_password_grant_request()
     {
-        $this->call('POST', 'cms-api/auth/issue', [
+        $response = $this->call('POST', 'cms-api/auth/issue', [
             'client_id'     => static::OAUTH_CLIENT_ID,
             'client_secret' => static::OAUTH_CLIENT_SECRET,
             'grant_type'    => 'password',
@@ -24,16 +24,15 @@ class OAuthTokenTest extends ApiTestCase
             'password'      => static::USER_ADMIN_PASSWORD,
         ]);
 
-        $this->seeStatusCode(200)
-             ->seeJson()
-             ->seeJsonStructure([
+        $response->assertStatus(200)
+             ->assertJsonStructure([
                  'access_token',
                  'token_type',
                  'expires_in',
                  'refresh_token',
              ]);
 
-        $response = $this->decodeResponseJson();
+        $response = $response->decodeResponseJson();
 
         $this->assertEquals('bearer', strtolower($response['token_type']));
         $this->assertInternalType('int', $response['expires_in']);
@@ -46,16 +45,15 @@ class OAuthTokenTest extends ApiTestCase
     {
         $this->seedTestTokens();
 
-        $this->call('POST', 'cms-api/auth/issue', [
+        $response = $this->call('POST', 'cms-api/auth/issue', [
             'client_id'     => static::OAUTH_CLIENT_ID,
             'client_secret' => static::OAUTH_CLIENT_SECRET,
             'grant_type'    => 'refresh_token',
             'refresh_token' => static::OAUTH_TEST_REFRESH_TOKEN,
         ]);
 
-        $this->seeStatusCode(200)
-            ->seeJson()
-            ->seeJsonStructure([
+        $response->assertStatus(200)
+            ->assertJsonStructure([
                 'access_token',
                 'token_type',
                 'expires_in',
@@ -70,18 +68,18 @@ class OAuthTokenTest extends ApiTestCase
     {
         $this->seedTestTokens();
 
-        $this->seeInDatabase('cms_oauth_access_tokens', [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]);
+        $this->assertDatabaseHas('cms_oauth_access_tokens', [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]);
 
-        $this->call('POST', 'cms-api/auth/revoke', [
+        $response = $this->call('POST', 'cms-api/auth/revoke', [
             'token'           => static::OAUTH_TEST_ACCESS_TOKEN,
             'token_type_hint' => 'access_token',
         ], [], [], $this->transformHeadersToServerVars([
             'Authorization' => 'Bearer ' . static::OAUTH_TEST_ACCESS_TOKEN,
         ]));
 
-        $this->seeStatusCode(200);
+        $response->assertStatus(200);
 
-        $this->notSeeInDatabase('cms_oauth_access_tokens', [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]);
+        $this->assertDatabaseMissing('cms_oauth_access_tokens', [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]);
     }
     
     /**
@@ -91,18 +89,18 @@ class OAuthTokenTest extends ApiTestCase
     {
         $this->seedTestTokens();
 
-        $this->seeInDatabase('cms_oauth_refresh_tokens', [ 'id' => static::OAUTH_TEST_REFRESH_TOKEN ]);
+        $this->assertDatabaseHas('cms_oauth_refresh_tokens', [ 'id' => static::OAUTH_TEST_REFRESH_TOKEN ]);
 
-        $this->call('POST', 'cms-api/auth/revoke', [
+        $response = $this->call('POST', 'cms-api/auth/revoke', [
             'token'           => static::OAUTH_TEST_REFRESH_TOKEN,
             'token_type_hint' => 'refresh_token',
         ], [], [], $this->transformHeadersToServerVars([
             'Authorization' => 'Bearer ' . static::OAUTH_TEST_ACCESS_TOKEN,
         ]));
 
-        $this->seeStatusCode(200);
+        $response->assertStatus(200);
 
-        $this->notSeeInDatabase('cms_oauth_refresh_tokens', [ 'id' => static::OAUTH_TEST_REFRESH_TOKEN ]);
+        $this->assertDatabaseMissing('cms_oauth_refresh_tokens', [ 'id' => static::OAUTH_TEST_REFRESH_TOKEN ]);
     }
     
     /**
@@ -112,18 +110,18 @@ class OAuthTokenTest extends ApiTestCase
     {
         $this->seedTestTokens();
 
-        $this->seeInDatabase('cms_oauth_access_tokens', [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]);
+        $this->assertDatabaseHas('cms_oauth_access_tokens', [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]);
 
-        $this->call('POST', 'cms-api/auth/revoke', [
+        $response = $this->call('POST', 'cms-api/auth/revoke', [
             'token'           => 'ANONEXISTANTTOKENTHATTOBEIGNORED',
             'token_type_hint' => 'access_token',
         ], [], [], $this->transformHeadersToServerVars([
             'Authorization' => 'Bearer ' . static::OAUTH_TEST_ACCESS_TOKEN,
         ]));
 
-        $this->seeStatusCode(200);
+        $response->assertStatus(200);
 
-        $this->seeInDatabase('cms_oauth_access_tokens', [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]);
+        $this->assertDatabaseHas('cms_oauth_access_tokens', [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]);
     }
     
     /**
@@ -131,23 +129,23 @@ class OAuthTokenTest extends ApiTestCase
      */
     function it_denies_access_for_an_invalid_password_grant()
     {
-        $this->call('POST', 'cms-api/auth/issue', [
+        $response = $this->call('POST', 'cms-api/auth/issue', [
             'client_id'     => static::OAUTH_CLIENT_ID,
             'client_secret' => static::OAUTH_CLIENT_SECRET,
             'grant_type'    => 'password',
             'username'      => static::USER_ADMIN_EMAIL,
             'password'      => 'wrong-password',
         ]);
-        $this->seeStatusCode(401);
+        $response->assertStatus(401);
 
-        $this->call('POST', 'cms-api/auth/issue', [
+        $response = $this->call('POST', 'cms-api/auth/issue', [
             'client_id'     => static::OAUTH_CLIENT_ID,
             'client_secret' => static::OAUTH_CLIENT_SECRET,
             'grant_type'    => 'password',
             'username'      => 'not.a.valid@user.com',
             'password'      => 'wrong-password',
         ]);
-        $this->seeStatusCode(401);
+        $response->assertStatus(401);
     }
 
     /**
@@ -157,14 +155,14 @@ class OAuthTokenTest extends ApiTestCase
     {
         $this->seedTestTokens();
 
-        $this->call('POST', 'cms-api/auth/issue', [
+        $response = $this->call('POST', 'cms-api/auth/issue', [
             'client_id'     => static::OAUTH_CLIENT_ID,
             'client_secret' => static::OAUTH_CLIENT_SECRET,
             'grant_type'    => 'refresh_token',
             'refresh_token' => 'INVALIDMADEUPREFRESHTOKEN',
         ]);
-        $this->seeStatusCode(400)
-             ->seeJsonContains([ 'message' => 'The refresh token is invalid.' ]);
+        $response->assertStatus(400)
+             ->assertJsonStructure([ 'message' => 'The refresh token is invalid.' ]);
     }
     
     /**
@@ -174,16 +172,16 @@ class OAuthTokenTest extends ApiTestCase
     {
         $this->seedTestTokens();
 
-        $this->seeInDatabase('cms_oauth_access_tokens', [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]);
+        $this->assertDatabaseHas('cms_oauth_access_tokens', [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]);
 
-        $this->call('POST', 'cms-api/auth/revoke', [
+        $response = $this->call('POST', 'cms-api/auth/revoke', [
             'token'           => static::OAUTH_TEST_ACCESS_TOKEN,
             'token_type_hint' => 'access_token',
         ], [], [], $this->transformHeadersToServerVars([
             'Authorization' => 'Bearer FALSEBEARERAUTHORIZATION',
         ]));
 
-        $this->seeStatusCode(401);
+        $response->assertStatus(401);
     }
 
     // ------------------------------------------------------------------------------
