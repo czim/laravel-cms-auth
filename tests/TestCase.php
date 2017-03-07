@@ -4,6 +4,7 @@ namespace Czim\CmsAuth\Test;
 use Czim\CmsAuth\Sentinel\Users\EloquentUser;
 use Czim\CmsCore\Providers\CmsCoreServiceProvider;
 use Czim\CmsCore\Support\Enums\Component;
+use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -26,6 +27,9 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'prefix'   => '',
         ]);
         $app['config']->set('cms-core.database.testing.driver', 'testbench');
+
+        // Prefix doesn't work in sqlite memory
+        $app['config']->set('cms-core.database.prefix', '');
 
         // todo remove after fixing package config
         $app['config']->set('cms-modules.modules', []);
@@ -65,6 +69,17 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     }
 
     /**
+     * @param \Illuminate\Foundation\Application $app
+     * @return array
+     */
+    protected function getPackageProviders($app)
+    {
+        return [
+            \Orchestra\Database\ConsoleServiceProvider::class
+        ];
+    }
+
+    /**
      * Setup the test environment.
      *
      * @return void
@@ -96,12 +111,12 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         // prefix set by the CMS config, this will NOT use the cms:migrate
         // artisan context, so the migrations table will not be prefixed.
 
-        $this->artisan('migrate', [
+        $this->loadMigrationsFrom([
             '--database' => 'testbench',
             '--realpath' => realpath(__DIR__ . '/../migrations/api'),
         ]);
 
-        $this->artisan('migrate', [
+        $this->loadMigrationsFrom([
             '--database' => 'testbench',
             '--realpath' => realpath(__DIR__ . '/../migrations/sentinel'),
         ]);
@@ -138,9 +153,22 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
      * @param string $table
      * @return string
      */
-    protected function prefixTable($table)
+    protected function prefixCmsTable($table)
     {
+        // No prefix, due to sqlite memory driver
         return $table;
+    }
+
+    /**
+     * @param array|string $realpath
+     */
+    protected function loadMigrationsFrom($realpath)
+    {
+        $options = is_array($realpath) ? $realpath : ['--realpath' => $realpath];
+
+        $this->artisan('migrate', $options);
+
+        $this->app[ConsoleKernel::class]->setArtisan(null);
     }
 
 }
