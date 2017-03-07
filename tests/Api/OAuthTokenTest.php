@@ -68,7 +68,10 @@ class OAuthTokenTest extends ApiTestCase
     {
         $this->seedTestTokens();
 
-        $this->assertDatabaseHas('cms_oauth_access_tokens', [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]);
+        $this->assertDatabaseHas(
+            $this->prefixCmsTable('oauth_access_tokens'),
+            [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]
+        );
 
         $response = $this->call('POST', 'cms-api/auth/revoke', [
             'token'           => static::OAUTH_TEST_ACCESS_TOKEN,
@@ -79,7 +82,10 @@ class OAuthTokenTest extends ApiTestCase
 
         $response->assertStatus(200);
 
-        $this->assertDatabaseMissing('cms_oauth_access_tokens', [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]);
+        $this->assertDatabaseMissing(
+            $this->prefixCmsTable('oauth_access_tokens'),
+            [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]
+        );
     }
     
     /**
@@ -89,7 +95,10 @@ class OAuthTokenTest extends ApiTestCase
     {
         $this->seedTestTokens();
 
-        $this->assertDatabaseHas('cms_oauth_refresh_tokens', [ 'id' => static::OAUTH_TEST_REFRESH_TOKEN ]);
+        $this->assertDatabaseHas(
+            $this->prefixCmsTable('oauth_refresh_tokens'),
+            [ 'id' => static::OAUTH_TEST_REFRESH_TOKEN ]
+        );
 
         $response = $this->call('POST', 'cms-api/auth/revoke', [
             'token'           => static::OAUTH_TEST_REFRESH_TOKEN,
@@ -100,7 +109,10 @@ class OAuthTokenTest extends ApiTestCase
 
         $response->assertStatus(200);
 
-        $this->assertDatabaseMissing('cms_oauth_refresh_tokens', [ 'id' => static::OAUTH_TEST_REFRESH_TOKEN ]);
+        $this->assertDatabaseMissing(
+            $this->prefixCmsTable('oauth_refresh_tokens'),
+            [ 'id' => static::OAUTH_TEST_REFRESH_TOKEN ]
+        );
     }
     
     /**
@@ -110,7 +122,10 @@ class OAuthTokenTest extends ApiTestCase
     {
         $this->seedTestTokens();
 
-        $this->assertDatabaseHas('cms_oauth_access_tokens', [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]);
+        $this->assertDatabaseHas(
+            $this->prefixCmsTable('oauth_access_tokens'),
+            [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]
+        );
 
         $response = $this->call('POST', 'cms-api/auth/revoke', [
             'token'           => 'ANONEXISTANTTOKENTHATTOBEIGNORED',
@@ -121,7 +136,10 @@ class OAuthTokenTest extends ApiTestCase
 
         $response->assertStatus(200);
 
-        $this->assertDatabaseHas('cms_oauth_access_tokens', [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]);
+        $this->assertDatabaseHas(
+            $this->prefixCmsTable('oauth_access_tokens'),
+            [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]
+        );
     }
     
     /**
@@ -172,7 +190,10 @@ class OAuthTokenTest extends ApiTestCase
     {
         $this->seedTestTokens();
 
-        $this->assertDatabaseHas('cms_oauth_access_tokens', [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]);
+        $this->assertDatabaseHas(
+            $this->prefixCmsTable('oauth_access_tokens'),
+            [ 'id' => static::OAUTH_TEST_ACCESS_TOKEN ]
+        );
 
         $response = $this->call('POST', 'cms-api/auth/revoke', [
             'token'           => static::OAUTH_TEST_ACCESS_TOKEN,
@@ -199,7 +220,7 @@ class OAuthTokenTest extends ApiTestCase
             ? Carbon::now()->subDay()->timestamp
             : Carbon::now()->addDay()->timestamp;
 
-        DB::table('cms_oauth_sessions')
+        DB::table($this->prefixCmsTable('oauth_sessions'))
             ->insert([
                 'id'         => 1,
                 'client_id'  => static::OAUTH_CLIENT_ID,
@@ -209,7 +230,7 @@ class OAuthTokenTest extends ApiTestCase
                 'updated_at' => Carbon::now(),
             ]);
 
-        DB::table('cms_oauth_access_tokens')
+        DB::table($this->prefixCmsTable('oauth_access_tokens'))
             ->insert([
                 'id'          => static::OAUTH_TEST_ACCESS_TOKEN,
                 'session_id'  => 1,
@@ -218,7 +239,7 @@ class OAuthTokenTest extends ApiTestCase
                 'updated_at'  => Carbon::now(),
             ]);
 
-        DB::table('cms_oauth_refresh_tokens')
+        DB::table($this->prefixCmsTable('oauth_refresh_tokens'))
             ->insert([
                 'id'              => static::OAUTH_TEST_REFRESH_TOKEN,
                 'access_token_id' => static::OAUTH_TEST_ACCESS_TOKEN,

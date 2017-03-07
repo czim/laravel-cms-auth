@@ -18,13 +18,13 @@ class DeleteUserCommandTest extends TestCase
             'password' => \Hash::make('testing'),
         ]);
 
-        $this->assertDatabaseHas('cms_users', [ 'email' => 'test@test.com' ]);
+        $this->assertDatabaseHas($this->prefixCmsTable('users'), [ 'email' => 'test@test.com' ]);
 
         Artisan::call('cms:user:delete', [
             'username' => 'test@test.com',
         ]);
 
-        $this->assertDatabaseMissing('cms_users', [ 'email' => 'test@test.com' ]);
+        $this->assertDatabaseMissing($this->prefixCmsTable('users'), [ 'email' => 'test@test.com' ]);
     }
 
 }
