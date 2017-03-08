@@ -40,16 +40,16 @@ class CreateOAuthClient extends Command
         $clientSecret = $this->argument('secret') ?: $this->ask('Enter client secret (empty to generate)', str_random(32));
 
 
+        if ($this->checkClientExists($clientId)) {
+            $this->error('Client with this ID already exists!');
+            return;
+        }
+
         if ($this->checkClientNameExists($name)) {
             if ( ! $this->confirm('Client with this name already exists. Use anyway?')) {
                 $this->error('Aborted.');
                 return;
             }
-        }
-
-        if ($this->checkClientExists($clientId)) {
-            $this->error('Client with this ID already exists!');
-            return;
         }
 
         $this->createClient($clientId, $clientSecret, $name);

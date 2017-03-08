@@ -22,6 +22,7 @@ class DeleteUser extends Command
 
         if ( ! $this->getAuthenticator()->deleteUser($username)) {
             $this->error("Failed to find or delete user '{$username}'");
+            return;
         }
 
         $this->info('User deleted.');

@@ -25,6 +25,7 @@ class CreateUser extends Command
         $lastName  = $this->option('lastName') ?: $this->ask('Enter last name');
 
         if ( ! ($password = $this->argument('password'))) {
+            // @codeCoverageIgnoreStart
             do {
                 $password        = $this->secret('Enter password');
                 $passwordConfirm = $this->secret('Confirm password');
@@ -35,6 +36,7 @@ class CreateUser extends Command
                 }
 
             } while (empty($password));
+            // @codeCoverageIgnoreEnd
         }
 
         $user = $this->getAuthenticator()->createUser($email, $password, [
