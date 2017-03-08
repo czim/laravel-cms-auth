@@ -28,6 +28,7 @@ class SentinelServiceProvider extends CartalystSentinelServiceProvider
     protected function registerSentinel()
     {
         $this->app->singleton('sentinel', function ($app) {
+            // @codeCoverageIgnoreStart
             $sentinel = new Sentinel(
                 $app['sentinel.persistence'],
                 $app['sentinel.users'],
@@ -65,6 +66,7 @@ class SentinelServiceProvider extends CartalystSentinelServiceProvider
             });
 
             return $sentinel;
+            // @codeCoverageIgnoreEnd
         });
 
         // no alias
