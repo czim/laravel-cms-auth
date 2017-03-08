@@ -30,12 +30,12 @@ class AuthRepository implements AuthRepositoryInterface
 
     public function __construct()
     {
-        $this->sentinel  = app('sentinel');
+        $this->sentinel = app('sentinel');
 
-        $userModelClass = $this->sentinel->getUserRepository()->getModel();
+        $userModelClass  = $this->sentinel->getUserRepository()->getModel();
         $this->userModel = new $userModelClass;
 
-        $roleModelClass = $this->sentinel->getRoleRepository()->getModel();
+        $roleModelClass  = $this->sentinel->getRoleRepository()->getModel();
         $this->roleModel = new $roleModelClass;
     }
 
