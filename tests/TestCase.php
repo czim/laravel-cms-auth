@@ -133,4 +133,13 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         return \Czim\CmsCore\Core\BootChecker::class;
     }
 
+    /**
+     * @param string $table
+     * @return string
+     */
+    protected function prefixTable($table)
+    {
+        return 'cms_' . $table;
+    }
+
 }

@@ -1,11 +1,9 @@
 <?php
 namespace Czim\CmsAuth\Test\Console;
 
-use Artisan;
 use Czim\CmsAuth\Sentinel\Users\EloquentUser;
-use Czim\CmsAuth\Test\TestCase;
 
-class DeleteUserCommandTest extends TestCase
+class DeleteUserCommandTest extends ConsoleTestCase
 {
 
     /**
@@ -18,13 +16,25 @@ class DeleteUserCommandTest extends TestCase
             'password' => \Hash::make('testing'),
         ]);
 
-        $this->seeInDatabase('cms_users', [ 'email' => 'test@test.com' ]);
+        $this->seeInDatabase($this->prefixTable('users'), [ 'email' => 'test@test.com' ]);
 
-        Artisan::call('cms:user:delete', [
+        $this->artisan('cms:user:delete', [
             'username' => 'test@test.com',
         ]);
 
-        $this->notSeeInDatabase('cms_users', [ 'email' => 'test@test.com' ]);
+        $this->notSeeInDatabase($this->prefixTable('users'), [ 'email' => 'test@test.com' ]);
+    }
+
+    /**
+     * @test
+     */
+    function it_shows_an_error_if_the_user_could_not_be_found()
+    {
+        $this->artisan('cms:user:delete', [
+            'username' => 'does-not-exist-test@test.com',
+        ]);
+
+        static::assertRegExp('#failed#i', $this->getArtisanOutput());
     }
 
 }
