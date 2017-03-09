@@ -155,13 +155,13 @@ class AuthRepository implements AuthRepositoryInterface
     public function getAllPermissionsForRole($role)
     {
         /** @var EloquentRole $role */
-        $role = $this->sentinel->findRoleBySlug($role);
+        $role = $this->getRole($role);
 
         if ( ! $role) {
             return [];
         }
 
-        $permissions = array_keys($role->getPermissions());
+        $permissions = array_keys(array_filter($role->getPermissions()));
         sort($permissions);
 
         return $permissions;
@@ -254,7 +254,7 @@ class AuthRepository implements AuthRepositoryInterface
      */
     public function getRole($role)
     {
-        return $this->sentinel->getRoleRepository()->findBySlug($role);
+        return $this->sentinel->findRoleBySlug($role);
     }
 
     /**
