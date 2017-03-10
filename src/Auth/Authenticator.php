@@ -316,7 +316,7 @@ class Authenticator implements AuthenticatorInterface
         }
 
         $this->fireUserPermissionChangeEvent($user);
-        return false;
+        return true;
     }
 
     /**
