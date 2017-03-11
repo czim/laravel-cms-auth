@@ -21,12 +21,16 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
+        $app['config']->set('cms-core.database.testing.driver', 'testbench');
         $app['config']->set('database.connections.testbench', [
             'driver'   => 'sqlite',
             'database' => ':memory:',
             'prefix'   => '',
         ]);
         $app['config']->set('cms-core.database.testing.driver', 'testbench');
+
+        // Prefix doesn't work in sqlite memory
+        $app['config']->set('cms-core.database.prefix', '');
 
         // Prefix doesn't work in sqlite memory
         $app['config']->set('cms-core.database.prefix', '');
