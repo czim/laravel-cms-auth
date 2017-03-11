@@ -79,7 +79,9 @@ class AuthController extends Controller
         // Check if the given token matches the current user's
         $access = $this->authorizer->getAccessToken();
         if ( ! $access) {
+            // @codeCoverageIgnoreStart
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         if ($access->getId() !== $token) {
@@ -101,18 +103,24 @@ class AuthController extends Controller
 
         $refresh = $storage->get($token);
         if ( ! $refresh) {
+            // @codeCoverageIgnoreStart
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         // Check if the related access token matches the current user's token
         $access = $this->authorizer->getAccessToken();
 
         if ( ! $access) {
+            // @codeCoverageIgnoreStart
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         if ($access->getId() !== $refresh->getAccessToken()->getId()) {
+            // @codeCoverageIgnoreStart
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         $refresh->expire();
