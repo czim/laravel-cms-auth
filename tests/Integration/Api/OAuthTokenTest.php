@@ -6,6 +6,11 @@ use Czim\CmsAuth\Sentinel\Users\EloquentUser;
 use Czim\CmsAuth\Test\ApiTestCase;
 use DB;
 
+/**
+ * Class OAuthTokenTest
+ *
+ * @group api
+ */
 class OAuthTokenTest extends ApiTestCase
 {
     const OAUTH_TEST_ACCESS_TOKEN  = 'fnJle4ZBLbXAZ1MuuxeQZ8MJvz8MyKtxgmgI5LLB';

@@ -8,6 +8,11 @@ use Czim\CmsCore\Contracts\Auth\AuthenticatorInterface;
 use Czim\CmsCore\Support\Enums\Component;
 use Hash;
 
+/**
+ * Class VerifyUserTest
+ *
+ * @group api
+ */
 class VerifyUserTest extends TestCase
 {
 

@@ -13,7 +13,6 @@
     <testsuites>
         <testsuite name="CMS Auth Package Test Suite">
             <directory suffix=".php">./tests/</directory>
-            <exclude>./tests/Api</exclude>
         </testsuite>
     </testsuites>
 
@@ -21,7 +20,7 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src/</directory>
             <exclude>
-                <directory suffix=".php">./src/Api/OAuth</directory>
+                <group>api</group>
             </exclude>
         </whitelist>
     </filter>

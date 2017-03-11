@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 use LucaDegasperi\OAuth2Server\Authorizer;
 use Mockery;
 
+/**
+ * Class OAuthUserOwnerMiddlewareTest
+ *
+ * @group api
+ */
 class OAuthUserOwnerMiddlewareTest extends TestCase
 {
     protected $oauthDisabled = false;

@@ -6,6 +6,11 @@ use DB;
 use Illuminate\Console\Command;
 use Mockery;
 
+/**
+ * Class CreateOAuthClientCommandTest
+ *
+ * @group api
+ */
 class CreateOAuthClientCommandTest extends ConsoleTestCase
 {
 
