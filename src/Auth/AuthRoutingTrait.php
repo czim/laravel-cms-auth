@@ -69,7 +69,9 @@ trait AuthRoutingTrait
      */
     public function getRoutePasswordEmailPostAction()
     {
-        return PasswordController::class . '@sendResetLinkEmail';
+        return [
+            'uses' => PasswordController::class . '@sendResetLinkEmail'
+        ];
     }
 
     /**
@@ -92,7 +94,9 @@ trait AuthRoutingTrait
      */
     public function getRoutePasswordResetPostAction()
     {
-        return PasswordController::class . '@reset';
+        return [
+            'uses' => PasswordController::class . '@reset'
+        ];
     }
 
 }

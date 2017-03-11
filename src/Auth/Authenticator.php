@@ -312,7 +312,9 @@ class Authenticator implements AuthenticatorInterface
         }
 
         if ($count !== count($roles)) {
+            // @codeCoverageIgnoreStart
             return false;
+            // @codeCoverageIgnoreEnd
         }
 
         $this->fireUserPermissionChangeEvent($user);
@@ -332,7 +334,9 @@ class Authenticator implements AuthenticatorInterface
 
         /** @var EloquentRole $roleModel */
         if ( ! ($roleModel = $this->sentinel->findRoleBySlug($role))) {
+            // @codeCoverageIgnoreStart
             return false;
+            // @codeCoverageIgnoreEnd
         }
 
         $roleModel->users()->detach($user->id);
@@ -475,7 +479,9 @@ class Authenticator implements AuthenticatorInterface
         }
 
         if ( ! $roleModel->save()) {
+            // @codeCoverageIgnoreStart
             return false;
+            // @codeCoverageIgnoreEnd
         }
 
         $this->fireRoleChangeEvent();
@@ -512,7 +518,9 @@ class Authenticator implements AuthenticatorInterface
         }
 
         if ( ! $roleModel->save()) {
+            // @codeCoverageIgnoreStart
             return false;
+            // @codeCoverageIgnoreEnd
         }
 
         $this->fireRoleChangeEvent();
@@ -526,6 +534,100 @@ class Authenticator implements AuthenticatorInterface
     protected function revokeSinglePermissionFromRole($permission, EloquentRole $role)
     {
         $role->removePermission($permission);
+    }
+
+    /**
+     * Create new CMS user.
+     *
+     * @param string $username
+     * @param string $password
+     * @param array  $data
+     * @return UserInterface
+     * @throws \Exception
+     */
+    public function createUser($username, $password, array $data = [])
+    {
+        /** @var UserInterface|EloquentUser $user */
+        $user = $this->sentinel->registerAndActivate([
+            'email'    => $username,
+            'password' => $password,
+        ]);
+
+        if ( ! $user) {
+            // @codeCoverageIgnoreStart
+            throw new \Exception("Failed to create user '{$username}'");
+            // @codeCoverageIgnoreEnd
+        }
+
+        $user->update($data);
+
+        return $user;
+    }
+
+    /**
+     * Removes a user from the CMS.
+     *
+     * @param string $username
+     * @return bool
+     */
+    public function deleteUser($username)
+    {
+        /** @var UserInterface|EloquentUser $user */
+        if ( ! ($user = $this->sentinel->findByCredentials(['email' => $username]))) {
+            return false;
+        }
+
+        // The super admin may not be deleted.
+        if ($user->isAdmin()) {
+            return false;
+        }
+
+        return (bool) $user->delete();
+    }
+
+    /**
+     * Sets a new password for an existing CMS user.
+     *
+     * @param string $username
+     * @param string $password
+     * @return bool
+     */
+    public function updatePassword($username, $password)
+    {
+        /** @var UserInterface|EloquentUser $user */
+        if ( ! ($user = $this->sentinel->findByCredentials(['email' => $username]))) {
+            return false;
+        }
+
+        return $this->sentinel->update($user, ['password' => $password]) instanceof UserInterface;
+    }
+
+    /**
+     * Updates a CMS user's (extra) data.
+     *
+     * @param string $username
+     * @param array $data
+     * @return bool
+     */
+    public function updateUser($username, array $data)
+    {
+        /** @var UserInterface|EloquentUser $user */
+        if ( ! ($user = $this->sentinel->findByCredentials(['email' => $username]))) {
+            return false;
+        }
+
+        return $user->update($data);
+    }
+
+    /**
+     * Converts a role slug to a displayable name
+     *
+     * @param string $slug
+     * @return string
+     */
+    protected function convertRoleSlugToName($slug)
+    {
+        return ucfirst(str_replace('.', ' ', $slug));
     }
 
 
@@ -556,106 +658,6 @@ class Authenticator implements AuthenticatorInterface
         event( new CmsRolesChanged() );
 
         return $this;
-    }
-
-    /**
-     * Create new CMS user.
-     *
-     * @param string $username
-     * @param string $password
-     * @param array  $data
-     * @return UserInterface
-     * @throws \Exception
-     */
-    public function createUser($username, $password, array $data = [])
-    {
-        /** @var UserInterface|EloquentUser $user */
-        $user = $this->sentinel->registerAndActivate([
-            'email'    => $username,
-            'password' => $password,
-        ]);
-
-        if ( ! $user) {
-            throw new \Exception("Failed to create user '{$username}'");
-        }
-
-        $user->update($data);
-
-        return $user;
-    }
-
-    /**
-     * Removes a user from the CMS.
-     *
-     * @param $username
-     * @return bool
-     */
-    public function deleteUser($username)
-    {
-        /** @var UserInterface|EloquentUser $user */
-        $user = $this->sentinel->findByCredentials([ 'email' => $username ]);
-
-        if ( ! $user) {
-            return false;
-        }
-
-        // The super admin may not be deleted.
-        if ($user->isAdmin()) {
-            return false;
-        }
-
-        return (bool) $user->delete();
-    }
-
-    /**
-     * Sets a new password for an existing CMS user.
-     *
-     * @param string $username
-     * @param string $password
-     * @return bool
-     */
-    public function updatePassword($username, $password)
-    {
-        /** @var UserInterface|EloquentUser $user */
-        $user = $this->sentinel->findByCredentials([ 'email' => $username ]);
-
-        if ( ! $user) {
-            return false;
-        }
-
-        return $this->sentinel->update($user, [ 'password' => $password ]) instanceof UserInterface;
-    }
-
-    /**
-     * Updates a CMS user's (extra) data.
-     *
-     * @param string $username
-     * @param array $data
-     * @return bool
-     */
-    public function updateUser($username, array $data)
-    {
-        /** @var UserInterface|EloquentUser $user */
-        $user = $this->sentinel->findByCredentials([ 'email' => $username ]);
-
-        if ( ! $user) {
-            return false;
-        }
-
-        $user->fill($data);
-
-        return $user->save();
-    }
-
-    /**
-     * Converts a role slug to a displayable name
-     *
-     * @param string $slug
-     * @return string
-     */
-    protected function convertRoleSlugToName($slug)
-    {
-        return ucfirst(str_replace('.', ' ', $slug));
     }
 
 }
