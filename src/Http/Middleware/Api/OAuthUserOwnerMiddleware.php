@@ -98,7 +98,9 @@ class OAuthUserOwnerMiddleware
     protected function loginUserById($id)
     {
         if ( ! $id) {
+            // @codeCoverageIgnoreStart
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         $user = $this->auth->getUserById( (int) $id );

@@ -1,6 +1,12 @@
 <?php
 namespace Czim\CmsAuth\Http\Controllers;
 
+/**
+ * Class PasswordController
+ *
+ * @todo
+ * @codeCoverageIgnore
+ */
 class PasswordController extends Controller
 {
 
