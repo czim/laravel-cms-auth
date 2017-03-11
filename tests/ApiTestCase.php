@@ -15,7 +15,7 @@ abstract class ApiTestCase extends WebTestCase
         parent::seedDatabase();
 
         // Create a default OAuth client
-        DB::table('cms_oauth_clients')
+        DB::table($this->prefixTable('oauth_clients'))
             ->insert([
                 'id'         => static::OAUTH_CLIENT_ID,
                 'secret'     => static::OAUTH_CLIENT_SECRET,

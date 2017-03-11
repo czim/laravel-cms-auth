@@ -25,6 +25,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+        $app['config']->set('cms-core.database.testing.driver', 'testbench');
 
         // todo remove after fixing package config
         $app['config']->set('cms-modules.modules', []);
@@ -139,7 +140,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
      */
     protected function prefixTable($table)
     {
-        return 'cms_' . $table;
+        return $table;
     }
 
 }

@@ -21,7 +21,7 @@ class CreateUserCommandTest extends ConsoleTestCase
             '--lastName'  => 'User',
         ]);
 
-        $this->seeInDatabase('cms_users', [
+        $this->seeInDatabase($this->prefixTable('users'), [
             'email'      => 'test@test.com',
             'first_name' => 'Test',
             'last_name'  => 'User',
@@ -41,7 +41,7 @@ class CreateUserCommandTest extends ConsoleTestCase
             '--lastName'  => 'Admin',
         ]);
 
-        $this->seeInDatabase('cms_users', [
+        $this->seeInDatabase($this->prefixTable('users'), [
             'email'         => 'admin@test.com',
             'is_superadmin' => true,
             'first_name'    => 'Test',
@@ -66,7 +66,7 @@ class CreateUserCommandTest extends ConsoleTestCase
             '--lastName'  => 'Admin',
         ]);
 
-        $this->seeInDatabase('cms_users', [
+        $this->seeInDatabase($this->prefixTable('users'), [
             'email'      => 'admin@test.com',
             'first_name' => 'Test',
             'last_name'  => 'Admin',
