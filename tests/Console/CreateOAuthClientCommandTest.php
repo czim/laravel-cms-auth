@@ -63,7 +63,7 @@ class CreateOAuthClientCommandTest extends ConsoleTestCase
      */
     function it_asks_confirmation_before_storing_new_client_with_existing_name()
     {
-        /** @var Mockery\MockInterface|Command $command */
+        /** @var Mockery\Mock|Command $command */
         $command = Mockery::mock(CreateOAuthClient::class . '[confirm]');
         $command->shouldReceive('confirm')->once()->andReturn(true);
 
@@ -94,7 +94,7 @@ class CreateOAuthClientCommandTest extends ConsoleTestCase
      */
     function it_aborts_if_confirmation_is_denied_for_new_client_with_existing_name()
     {
-        /** @var Mockery\MockInterface|Command $command */
+        /** @var Mockery\Mock|Command $command */
         $command = Mockery::mock(CreateOAuthClient::class . '[confirm]');
         $command->shouldReceive('confirm')->once()->andReturn(false);
 
@@ -125,7 +125,7 @@ class CreateOAuthClientCommandTest extends ConsoleTestCase
      */
     function it_warns_if_the_record_was_not_created_succesfully()
     {
-        /** @var Mockery\MockInterface|Command $command */
+        /** @var Mockery\Mock|Command $command */
         $command = Mockery::mock(CreateOAuthClient::class . '[createClient]')
             ->shouldAllowMockingProtectedMethods();
 

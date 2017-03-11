@@ -77,6 +77,7 @@ class AuthRoutingTraitTest extends TestCase
             $roles->shouldReceive('getModel')->andReturn(EloquentRole::class);
         }
 
+        /** @var Mockery\Mock $mock */
         $mock = Mockery::mock(Sentinel::class);
         $mock->shouldReceive('getUserRepository')->andReturn($users);
         $mock->shouldReceive('getRoleRepository')->andReturn($roles);
@@ -85,7 +86,7 @@ class AuthRoutingTraitTest extends TestCase
     }
 
     /**
-     * @return UserRepositoryInterface|\Mockery\MockInterface
+     * @return UserRepositoryInterface|\Mockery\MockInterface|\Mockery\Mock
      */
     protected function getMockUserRepository()
     {
@@ -93,7 +94,7 @@ class AuthRoutingTraitTest extends TestCase
     }
 
     /**
-     * @return UserRepositoryInterface|\Mockery\MockInterface
+     * @return UserRepositoryInterface|\Mockery\MockInterface|\Mockery\Mock
      */
     protected function getMockRoleRepository()
     {
@@ -101,7 +102,7 @@ class AuthRoutingTraitTest extends TestCase
     }
 
     /**
-     * @return AuthRepositoryInterface|Mockery\MockInterface
+     * @return AuthRepositoryInterface|Mockery\MockInterface|\Mockery\Mock
      */
     protected function getMockAuthRepository()
     {

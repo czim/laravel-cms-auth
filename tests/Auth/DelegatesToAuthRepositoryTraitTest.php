@@ -167,7 +167,7 @@ class DelegatesToAuthRepositoryTraitTest extends TestCase
 
 
     /**
-     * @return AuthRepositoryInterface|Mockery\MockInterface
+     * @return AuthRepositoryInterface|Mockery\MockInterface|\Mockery\Mock
      */
     protected function getMockAuthRepository()
     {
