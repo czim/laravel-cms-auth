@@ -212,6 +212,7 @@ class AuthRepositoryTest extends TestCase
         $role = $this->createRole('Test Role', null, ['test.f' => true, 'test.b' => false, 'test.c' => true]);
         $this->createRole('Test Role 2', null, ['test.d' => true]);
 
+        /** @var EloquentUser $user */
         $user = EloquentUser::create([
             'email'       => 'user@test1.com',
             'password'    => Hash::make('test'),
@@ -364,7 +365,7 @@ class AuthRepositoryTest extends TestCase
     /**
      * @param null $users
      * @param null $roles
-     * @return Sentinel|\Mockery\MockInterface
+     * @return Sentinel|\Mockery\MockInterface|\Mockery\Mock
      */
     protected function getMockSentinel($users = null, $roles = null)
     {
@@ -378,6 +379,7 @@ class AuthRepositoryTest extends TestCase
             $roles->shouldReceive('getModel')->andReturn(EloquentRole::class);
         }
 
+        /** @var Mockery\Mock $mock */
         $mock = Mockery::mock(Sentinel::class);
         $mock->shouldReceive('getUserRepository')->andReturn($users);
         $mock->shouldReceive('getRoleRepository')->andReturn($roles);
@@ -386,7 +388,7 @@ class AuthRepositoryTest extends TestCase
     }
 
     /**
-     * @return UserRepositoryInterface|\Mockery\MockInterface
+     * @return UserRepositoryInterface|\Mockery\MockInterface|\Mockery\Mock
      */
     protected function getMockUserRepository()
     {
@@ -394,7 +396,7 @@ class AuthRepositoryTest extends TestCase
     }
 
     /**
-     * @return UserRepositoryInterface|\Mockery\MockInterface
+     * @return UserRepositoryInterface|\Mockery\MockInterface|\Mockery\Mock
      */
     protected function getMockRoleRepository()
     {

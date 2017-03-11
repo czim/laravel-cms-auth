@@ -7,6 +7,7 @@ use Czim\CmsAuth\Test\TestCase;
 use Czim\CmsCore\Contracts\Auth\AuthenticatorInterface;
 use Czim\CmsCore\Support\Enums\Component;
 use Hash;
+use Mockery;
 
 class VerifyUserTest extends TestCase
 {
@@ -16,8 +17,8 @@ class VerifyUserTest extends TestCase
      */
     function it_returns_false_for_incorrect_credentials_on_verification()
     {
-        /** @var AuthenticatorInterface $authMock */
-        $authMock = \Mockery::mock(AuthenticatorInterface::class);
+        /** @var AuthenticatorInterface|Mockery\Mock $authMock */
+        $authMock = Mockery::mock(AuthenticatorInterface::class);
         $authMock->shouldReceive('stateless')->once()->with('test@test.nl', 'testing')->andReturn(false);
 
         $this->app->instance(Component::AUTH, $authMock);
@@ -37,10 +38,10 @@ class VerifyUserTest extends TestCase
             'password' => Hash::make('testing'),
         ]);
 
-        $user->id = 1;
+        $user['id'] = 1;
 
-        /** @var AuthenticatorInterface $authMock */
-        $authMock = \Mockery::mock(AuthenticatorInterface::class);
+        /** @var AuthenticatorInterface|Mockery\Mock $authMock */
+        $authMock = Mockery::mock(AuthenticatorInterface::class);
         $authMock->shouldReceive('stateless')->once()->with('test@test.nl', 'testing')->andReturn(true);
         $authMock->shouldReceive('user')->once()->andReturn($user);
 
@@ -61,10 +62,10 @@ class VerifyUserTest extends TestCase
             'password' => Hash::make('testing'),
         ]);
 
-        $user->id = 1;
+        $user['id'] = 1;
 
-        /** @var AuthenticatorInterface $authMock */
-        $authMock = \Mockery::mock(AuthenticatorInterface::class);
+        /** @var AuthenticatorInterface|Mockery\Mock $authMock */
+        $authMock = Mockery::mock(AuthenticatorInterface::class);
         $authMock->shouldReceive('stateless')->once()->with('test@test.nl', 'testing')->andReturn(true);
         $authMock->shouldReceive('user')->once()->andReturn(false);
 

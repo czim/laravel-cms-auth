@@ -4,7 +4,6 @@ namespace Czim\CmsAuth\Test\Auth;
 use Cartalyst\Sentinel\Roles\RoleRepositoryInterface;
 use Cartalyst\Sentinel\Users\UserRepositoryInterface;
 use Czim\CmsAuth\Auth\Authenticator;
-use Czim\CmsAuth\Repositories\AuthRepository;
 use Czim\CmsAuth\Sentinel\Roles\EloquentRole;
 use Czim\CmsAuth\Sentinel\Sentinel;
 use Czim\CmsAuth\Sentinel\Users\EloquentUser;
@@ -145,7 +144,7 @@ class AuthenticatorTest extends TestCase
             ->with(['email' => 'test@test.nl', 'password' => 'testing'])
             ->andReturn($user);
 
-        static::assertTrue($auth->stateless('test@test.nl', 'testing', true));
+        static::assertTrue($auth->stateless('test@test.nl', 'testing'));
     }
 
     /**
@@ -164,7 +163,7 @@ class AuthenticatorTest extends TestCase
             ->with(['email' => 'test@test.nl', 'password' => 'testing'])
             ->andReturn(false);
 
-        static::assertFalse($auth->stateless('test@test.nl', 'testing', true));
+        static::assertFalse($auth->stateless('test@test.nl', 'testing'));
     }
 
     /**
@@ -331,6 +330,7 @@ class AuthenticatorTest extends TestCase
         $sentinelMock = $this->getMockSentinel();
         $this->app->instance('sentinel', $sentinelMock);
 
+        /** @var EloquentUser $user */
         $user = EloquentUser::create([
             'email'      => 'user@test1.com',
             'password'   => Hash::make('test'),
@@ -359,6 +359,7 @@ class AuthenticatorTest extends TestCase
         $sentinelMock = $this->getMockSentinel();
         $this->app->instance('sentinel', $sentinelMock);
 
+        /** @var EloquentUser $user */
         $user = EloquentUser::create([
             'email'      => 'user@test1.com',
             'password'   => Hash::make('test'),
@@ -391,6 +392,7 @@ class AuthenticatorTest extends TestCase
         $sentinelMock = $this->getMockSentinel();
         $this->app->instance('sentinel', $sentinelMock);
 
+        /** @var EloquentUser $user */
         $user = EloquentUser::create([
             'email'      => 'user@test1.com',
             'password'   => Hash::make('test'),
@@ -398,7 +400,7 @@ class AuthenticatorTest extends TestCase
             'first_name' => '1',
         ]);
         $role = $this->createRole('Test Role');
-        $user->roles()->attach($role->id);
+        $user->roles()->attach($role['id']);
 
         $auth = new Authenticator($this->getMockAuthRepository());
 
@@ -421,6 +423,7 @@ class AuthenticatorTest extends TestCase
         $sentinelMock = $this->getMockSentinel();
         $this->app->instance('sentinel', $sentinelMock);
 
+        /** @var EloquentUser $user */
         $user = EloquentUser::create([
             'email'      => 'user@test1.com',
             'password'   => Hash::make('test'),
@@ -430,7 +433,7 @@ class AuthenticatorTest extends TestCase
         $roleA = $this->createRole('Test Role');
         $roleB = $this->createRole('Test Role2');
 
-        $user->roles()->sync([$roleA->id, $roleB->id]);
+        $user->roles()->sync([$roleA['id'], $roleB['id']]);
 
         $auth = new Authenticator($this->getMockAuthRepository());
 
@@ -442,7 +445,7 @@ class AuthenticatorTest extends TestCase
         static::assertEquals(0, $user->fresh()->roles()->count());
 
 
-        $user->roles()->sync([$roleA->id, $roleB->id]);
+        $user->roles()->sync([$roleA['id'], $roleB['id']]);
 
         // Should return true if one of the roles does not exist
         static::assertTrue($auth->unassign(['test_role', 'test_role_x'], $user));
@@ -512,6 +515,7 @@ class AuthenticatorTest extends TestCase
         $sentinelMock = $this->getMockSentinel();
         $this->app->instance('sentinel', $sentinelMock);
 
+        /** @var EloquentUser $user */
         $user = EloquentUser::create([
             'email'       => 'user@test1.com',
             'password'    => Hash::make('test'),
@@ -545,6 +549,7 @@ class AuthenticatorTest extends TestCase
         $sentinelMock = $this->getMockSentinel();
         $this->app->instance('sentinel', $sentinelMock);
 
+        /** @var EloquentUser $user */
         $user = EloquentUser::create([
             'email'       => 'user@test1.com',
             'password'    => Hash::make('test'),
@@ -558,7 +563,7 @@ class AuthenticatorTest extends TestCase
         $auth = new Authenticator($this->getMockAuthRepository());
 
         static::assertTrue($auth->grantMany(['test.permission', 'test.another'], $user));
-        static::assertTrue($user->can('test.present', 'test.permission', 'test.another'));
+        static::assertTrue($user->can(['test.present', 'test.permission', 'test.another']));
 
         // Should return false if user could not be saved
         $user = $this->getMockUser();
@@ -579,6 +584,7 @@ class AuthenticatorTest extends TestCase
         $sentinelMock = $this->getMockSentinel();
         $this->app->instance('sentinel', $sentinelMock);
 
+        /** @var EloquentUser $user */
         $user = EloquentUser::create([
             'email'       => 'user@test1.com',
             'password'    => Hash::make('test'),
@@ -614,6 +620,7 @@ class AuthenticatorTest extends TestCase
         $sentinelMock = $this->getMockSentinel();
         $this->app->instance('sentinel', $sentinelMock);
 
+        /** @var EloquentUser $user */
         $user = EloquentUser::create([
             'email'       => 'user@test1.com',
             'password'    => Hash::make('test'),
@@ -835,6 +842,7 @@ class AuthenticatorTest extends TestCase
         $sentinelMock = $this->getMockSentinel();
         $this->app->instance('sentinel', $sentinelMock);
 
+        /** @var EloquentUser $user */
         $user = EloquentUser::create([
             'email'      => 'test@test.nl',
             'password'   => Hash::make('testing'),
@@ -860,7 +868,7 @@ class AuthenticatorTest extends TestCase
     /**
      * @param null $users
      * @param null $roles
-     * @return Sentinel|\Mockery\MockInterface
+     * @return Sentinel|\Mockery\MockInterface|\Mockery\Mock
      */
     protected function getMockSentinel($users = null, $roles = null)
     {
@@ -874,6 +882,7 @@ class AuthenticatorTest extends TestCase
             $roles->shouldReceive('getModel')->andReturn(EloquentRole::class);
         }
 
+        /** @var Mockery\Mock $mock */
         $mock = Mockery::mock(Sentinel::class);
         $mock->shouldReceive('getUserRepository')->andReturn($users);
         $mock->shouldReceive('getRoleRepository')->andReturn($roles);
@@ -882,7 +891,7 @@ class AuthenticatorTest extends TestCase
     }
 
     /**
-     * @return AuthRepositoryInterface|Mockery\MockInterface
+     * @return AuthRepositoryInterface|Mockery\MockInterface|\Mockery\Mock
      */
     protected function getMockAuthRepository()
     {
@@ -890,7 +899,7 @@ class AuthenticatorTest extends TestCase
     }
 
     /**
-     * @return UserRepositoryInterface|\Mockery\MockInterface
+     * @return UserRepositoryInterface|\Mockery\MockInterface|\Mockery\Mock
      */
     protected function getMockUserRepository()
     {
@@ -898,7 +907,7 @@ class AuthenticatorTest extends TestCase
     }
 
     /**
-     * @return UserRepositoryInterface|\Mockery\MockInterface
+     * @return UserRepositoryInterface|\Mockery\MockInterface|\Mockery\Mock
      */
     protected function getMockRoleRepository()
     {
@@ -906,7 +915,7 @@ class AuthenticatorTest extends TestCase
     }
 
     /**
-     * @return EloquentUser|\Mockery\MockInterface
+     * @return EloquentUser|\Mockery\MockInterface|\Mockery\Mock
      */
     protected function getMockUser()
     {

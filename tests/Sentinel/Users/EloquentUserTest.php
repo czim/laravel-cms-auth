@@ -42,6 +42,7 @@ class EloquentUserTest extends TestCase
      */
     function it_returns_get_all_roles()
     {
+        /** @var EloquentUser $user */
         $user = EloquentUser::create([
             'email'    => 'Test',
             'password' => Hash::make('testing'),
@@ -63,6 +64,7 @@ class EloquentUserTest extends TestCase
      */
     function it_returns_get_all_permissions()
     {
+        /** @var EloquentUser $user */
         $user = EloquentUser::create([
             'email'    => 'Test',
             'password' => Hash::make('testing'),

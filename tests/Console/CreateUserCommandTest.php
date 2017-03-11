@@ -54,7 +54,7 @@ class CreateUserCommandTest extends ConsoleTestCase
      */
     function it_asks_for_a_password_if_none_is_given()
     {
-        /** @var Mockery\MockInterface|Command $command */
+        /** @var Mockery\Mock|Command $command */
         $command = Mockery::mock(CreateUser::class . '[secret]');
         $command->shouldReceive('secret')->twice()->andReturn('testpassword');
 
@@ -78,7 +78,7 @@ class CreateUserCommandTest extends ConsoleTestCase
      */
     function it_asks_again_if_no_password_is_entered_when_asked()
     {
-        /** @var Mockery\MockInterface|Command $command */
+        /** @var Mockery\Mock|Command $command */
         $command = Mockery::mock(CreateUser::class . '[secret]');
         $command->shouldReceive('secret')->times(4)->andReturn(null, null, 'test', 'test');
 
@@ -96,7 +96,7 @@ class CreateUserCommandTest extends ConsoleTestCase
      */
     function it_aborts_if_password_confirmation_is_different()
     {
-        /** @var Mockery\MockInterface|Command $command */
+        /** @var Mockery\Mock|Command $command */
         $command = Mockery::mock(CreateUser::class . '[secret]');
         $command->shouldReceive('secret')->times(4)->andReturn('test', 'notthesame', 'testpassword', 'testpassword');
 
@@ -119,7 +119,7 @@ class CreateUserCommandTest extends ConsoleTestCase
         $mockAuth = $this->getMockBuilder(AuthenticatorInterface::class)->getMock();
         $mockAuth->expects(static::once())->method('createUser')->willReturn(false);
 
-        /** @var Mockery\MockInterface|Command $command */
+        /** @var Mockery\Mock|Command $command */
         $command = Mockery::mock(CreateUser::class . '[getAuthenticator]')
             ->shouldAllowMockingProtectedMethods();
 
