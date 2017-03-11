@@ -18,9 +18,12 @@
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src/</directory>
+            <directory suffix=".php">./src</directory>
             <exclude>
-                <group>api</group>
+                <directory suffix=".php">./src/Api</directory>
+                <directory suffix=".php">./src/Http/Middleware/Api</directory>
+                <directory suffix=".php">./src/Providers/Api</directory>
+                <file>./src/Console/Commands/CreateOAuthClient.php</file>
             </exclude>
         </whitelist>
     </filter>
