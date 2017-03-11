@@ -1,5 +1,5 @@
 <?php
-namespace Czim\CmsAuth\Test\Api;
+namespace Czim\CmsAuth\Test\Integration\Api;
 
 use Carbon\Carbon;
 use Czim\CmsAuth\Sentinel\Users\EloquentUser;
