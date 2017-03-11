@@ -86,12 +86,13 @@ class AuthControllerTest extends WebTestCase
 
         $user = $auth->createUser('test@test.nl', 'testing');
 
-        $this->post('cms/auth/login', [
+        $response = $this->post('cms/auth/login', [
             'email'    => 'test@test.nl',
             'password' => 'testing',
         ]);
 
-        static::assertEquals(302, $this->response->getStatusCode());
+        $response->assertStatus(302);
+
         static::assertTrue($auth->check());
         static::assertEquals($user->getUsername(), $auth->user()->getUsername());
     }
@@ -109,12 +110,13 @@ class AuthControllerTest extends WebTestCase
         $this->app->setLocale('en');
         $this->app['translator']->addLines(['auth.failed' => 'translated'], 'en', 'cms');
 
-        $this->post('cms/auth/login', [
+        $response = $this->post('cms/auth/login', [
             'email'    => 'test@test.nl',
             'password' => 'incorrect',
         ]);
 
-        static::assertEquals(302, $this->response->getStatusCode());
+        $response->assertStatus(302);
+
         static::assertFalse($auth->check());
 
 
@@ -130,9 +132,10 @@ class AuthControllerTest extends WebTestCase
         $auth->createUser('test@test.nl', 'testing');
         static::assertTrue($auth->login('test@test.nl', 'testing'), 'Setup failed');
 
-        $this->get('cms/auth/logout');
+        $response = $this->get('cms/auth/logout');
 
-        static::assertEquals(302, $this->response->getStatusCode());
+        $response->assertStatus(302);
+
         static::assertFalse($auth->check());
     }
 

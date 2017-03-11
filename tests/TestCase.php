@@ -32,9 +32,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         // Prefix doesn't work in sqlite memory
         $app['config']->set('cms-core.database.prefix', '');
 
-        // Prefix doesn't work in sqlite memory
-        $app['config']->set('cms-core.database.prefix', '');
-
         // todo remove after fixing package config
         $app['config']->set('cms-modules.modules', []);
 
@@ -157,7 +154,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
      * @param string $table
      * @return string
      */
-    protected function prefixCmsTable($table)
+    protected function prefixTable($table)
     {
         // No prefix, due to sqlite memory driver
         return $table;
