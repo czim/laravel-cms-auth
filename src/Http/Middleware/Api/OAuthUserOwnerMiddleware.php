@@ -50,7 +50,7 @@ class OAuthUserOwnerMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if ($this->core->apiConfig('debug.disable-local-auth') && app()->isLocal()) {
+        if ($this->core->apiConfig('debug.disable-auth')) {
 
             $this->loginDebugUser($request);
 
