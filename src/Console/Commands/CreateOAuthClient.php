@@ -109,14 +109,6 @@ class CreateOAuthClient extends Command
     }
 
     /**
-     * @return null|string
-     */
-    protected function getConnection()
-    {
-        return $this->core->config('database.driver');
-    }
-
-    /**
      * @return string
      */
     protected function getTable()
