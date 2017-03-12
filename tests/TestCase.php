@@ -47,9 +47,9 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             \Czim\CmsCore\Providers\MigrationServiceProvider::class,
             \Czim\CmsCore\Providers\ViewServiceProvider::class,
             \Czim\CmsAuth\Providers\CmsAuthServiceProvider::class,
-            //\Czim\CmsAuth\Providers\Api\OAuthSetupServiceProvider::class,
+            \Czim\CmsAuth\Providers\Api\OAuthSetupServiceProvider::class,
             \Czim\CmsCore\Providers\Api\CmsCoreApiServiceProvider::class,
-            //\Czim\CmsCore\Providers\Api\ApiRouteServiceProvider::class,
+            \Czim\CmsCore\Providers\Api\ApiRouteServiceProvider::class,
         ]);
 
         // Mock component bindings in the config

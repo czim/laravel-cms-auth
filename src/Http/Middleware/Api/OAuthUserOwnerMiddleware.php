@@ -6,7 +6,7 @@ use Czim\CmsCore\Contracts\Auth\AuthenticatorInterface;
 use Czim\CmsCore\Contracts\Core\CoreInterface;
 use Illuminate\Http\Request;
 use League\OAuth2\Server\Exception\AccessDeniedException;
-use LucaDegasperi\OAuth2Server\Authorizer;
+use Czim\OAuth2Server\Authorizer;
 
 class OAuthUserOwnerMiddleware
 {

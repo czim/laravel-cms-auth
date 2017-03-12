@@ -7,7 +7,7 @@ use Czim\CmsAuth\Http\Requests\Api\OAuthIssueAccessTokenRequest;
 use Czim\CmsAuth\Http\Requests\Api\OAuthRevokeAccessTokenRequest;
 use Czim\CmsCore\Contracts\Core\CoreInterface;
 use Illuminate\Http\Request;
-use LucaDegasperi\OAuth2Server\Authorizer;
+use Czim\OAuth2Server\Authorizer;
 
 class AuthController extends Controller
 {

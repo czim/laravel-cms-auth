@@ -2,7 +2,7 @@
 namespace Czim\CmsAuth\Providers\Api;
 
 use Illuminate\Contracts\Container\Container as Application;
-use LucaDegasperi\OAuth2Server\OAuth2ServerServiceProvider as LucaDegasperiOAuth2ServerServiceProvider;
+use Czim\OAuth2Server\OAuth2ServerServiceProvider as LucaDegasperiOAuth2ServerServiceProvider;
 
 class OAuth2ServerServiceProvider extends LucaDegasperiOAuth2ServerServiceProvider
 {

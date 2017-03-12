@@ -1,7 +1,7 @@
 <?php
 namespace Czim\CmsAuth\Api\OAuth\Storage;
 
-use LucaDegasperi\OAuth2Server\Storage\AbstractFluentAdapter as LucaDegasperiAbstractFluentAdapter;
+use Czim\OAuth2Server\Storage\AbstractFluentAdapter as LucaDegasperiAbstractFluentAdapter;
 
 abstract class AbstractFluentAdapter extends LucaDegasperiAbstractFluentAdapter
 {

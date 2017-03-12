@@ -4,7 +4,7 @@ namespace Czim\CmsAuth\Http\Middleware\Api;
 use Closure;
 use Czim\CmsCore\Contracts\Core\CoreInterface;
 use Czim\CmsCore\Support\Enums\Component;
-use LucaDegasperi\OAuth2Server\Middleware\OAuthMiddleware as LucaDegasperiOAuthMiddleware;
+use Czim\OAuth2Server\Middleware\OAuthMiddleware as LucaDegasperiOAuthMiddleware;
 
 /**
  * Class OAuthMiddleware

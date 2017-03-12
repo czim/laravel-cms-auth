@@ -6,7 +6,7 @@ use Czim\CmsAuth\Test\TestCase;
 use Czim\CmsCore\Contracts\Core\CoreInterface;
 use Czim\CmsCore\Support\Enums\Component;
 use Illuminate\Http\Request;
-use LucaDegasperi\OAuth2Server\Authorizer;
+use Czim\OAuth2Server\Authorizer;
 use Mockery;
 
 /**

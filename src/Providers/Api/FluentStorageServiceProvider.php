@@ -16,7 +16,7 @@ use League\OAuth2\Server\Storage\ClientInterface;
 use League\OAuth2\Server\Storage\RefreshTokenInterface;
 use League\OAuth2\Server\Storage\ScopeInterface;
 use League\OAuth2\Server\Storage\SessionInterface;
-use LucaDegasperi\OAuth2Server\Storage\FluentStorageServiceProvider as LucaDeGasperiFluentStorageServiceProvider;
+use Czim\OAuth2Server\Storage\FluentStorageServiceProvider as LucaDeGasperiFluentStorageServiceProvider;
 
 class FluentStorageServiceProvider extends LucaDeGasperiFluentStorageServiceProvider
 {
