@@ -13,7 +13,7 @@ Authentication component for the CMS.
  Laravel             | Package 
 :--------------------|:--------
  5.3.x               | 1.3.x
- 5.4.x               | dev-laravel-5.4 (WIP)
+ 5.4.x               | 1.4.x
 
 
 ## API Documentation
