@@ -113,7 +113,7 @@ class CreateOAuthClientCommandTest extends ConsoleTestCase
             'secret' => 'iA0N09jED4Jepnk8qW8m5RvYuv6Loozj',
         ]);
 
-        $this->assertDatabaseHas($this->prefixTable('oauth_clients'), [
+        $this->assertDatabaseMissing($this->prefixTable('oauth_clients'), [
             'id'     => 'ukrbrZe9xSz5EN5UcVgpmyhREQzQzE5F',
             'secret' => 'iA0N09jED4Jepnk8qW8m5RvYuv6Loozj',
             'name'   => 'Test',
