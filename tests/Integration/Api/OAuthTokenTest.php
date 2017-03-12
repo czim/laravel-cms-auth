@@ -167,7 +167,7 @@ class OAuthTokenTest extends ApiTestCase
             'refresh_token' => 'INVALIDMADEUPREFRESHTOKEN',
         ]);
         $response->assertStatus(400)
-             ->assertJsonStructure([ 'message' => 'The refresh token is invalid.' ]);
+             ->assertJsonFragment([ 'message' => 'The refresh token is invalid.' ]);
     }
     
     /**
