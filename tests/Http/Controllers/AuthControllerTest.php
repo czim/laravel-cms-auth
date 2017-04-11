@@ -105,7 +105,7 @@ class AuthControllerTest extends WebTestCase
 
         $auth->createUser('test@test.nl', 'testing');
 
-        // Set translation key for NL
+        // Set translation key
         $this->app->setLocale('en');
         $this->app['translator']->addLines(['auth.failed' => 'translated'], 'en', 'cms');
 
