@@ -27,7 +27,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         ]);
         $app['config']->set('cms-core.database.testing.driver', 'testbench');
 
-        // todo remove after fixing package config
         $app['config']->set('cms-modules.modules', []);
 
         // Load the CMS even when unit testing
