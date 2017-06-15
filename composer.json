@@ -11,7 +11,7 @@
     "homepage": "https://github.com/czim",
     "require": {
         "php": ">=5.6.4",
-        "czim/oauth2-server-laravel": "dev-master",
+        "czim/oauth2-server-laravel": "~5.4.0",
         "cartalyst/sentinel": "^2.0"
     },
     "require-dev": {
