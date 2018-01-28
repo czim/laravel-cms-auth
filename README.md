@@ -19,6 +19,8 @@ If you intend to access the CMS through its API, check out the [czim/laravel-cms
  5.4.x               | 1.4.x
  5.5.x               | 1.4.3+
 
+From version 1.5 upwards, the API authentication is no longer included.
+
 ## Commands
 
 Users may be created on the fly by using the `cms:user:create` command.
