@@ -25,7 +25,7 @@ class Authenticator implements AuthenticatorInterface
 
 
     use AuthRoutingTrait,
-        AuthApiRoutingTrait,
+        NullApiAuthRoutingTrait,
         DelegatesToAuthRepositoryTrait;
 
     /**

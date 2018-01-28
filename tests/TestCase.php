@@ -47,9 +47,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             \Czim\CmsCore\Providers\MigrationServiceProvider::class,
             \Czim\CmsCore\Providers\ViewServiceProvider::class,
             \Czim\CmsAuth\Providers\CmsAuthServiceProvider::class,
-            \Czim\CmsAuth\Providers\Api\OAuthSetupServiceProvider::class,
-            \Czim\CmsCore\Providers\Api\CmsCoreApiServiceProvider::class,
-            \Czim\CmsCore\Providers\Api\ApiRouteServiceProvider::class,
         ]);
 
         // Mock component bindings in the config
@@ -111,11 +108,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         // Note that although this will set up the migrated tables with the
         // prefix set by the CMS config, this will NOT use the cms:migrate
         // artisan context, so the migrations table will not be prefixed.
-
-        $this->loadMigrationsFrom([
-            '--database' => 'testbench',
-            '--realpath' => realpath(__DIR__ . '/../migrations/api'),
-        ]);
 
         $this->loadMigrationsFrom([
             '--database' => 'testbench',

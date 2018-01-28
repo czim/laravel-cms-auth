@@ -11,7 +11,6 @@
     "homepage": "https://github.com/czim",
     "require": {
         "php": ">=5.6.4",
-        "czim/oauth2-server-laravel": "~5.4.0|~5.5.0",
         "cartalyst/sentinel": "^2.0"
     },
     "require-dev": {
@@ -38,5 +37,8 @@
         "test": "phpunit"
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "suggest": {
+        "czim/laravel-cms-auth-api": "Optional extension to support OAuth2 API authentication"
+    }
 }

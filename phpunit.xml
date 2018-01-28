@@ -19,9 +19,6 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src</directory>
-            <exclude>
-                <directory suffix=".php">./src/Api/OAuth</directory>
-            </exclude>
         </whitelist>
     </filter>
 
