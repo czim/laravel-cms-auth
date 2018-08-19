@@ -17,7 +17,8 @@ If you intend to access the CMS through its API, check out the [czim/laravel-cms
 :--------------------|:--------
  5.3.x               | 1.3.x
  5.4.x               | 1.4.x
- 5.5.x, 5.6.x        | 1.4.3+
+ 5.5.x               | 1.4.3+
+ 5.6.x               | 1.5
 
 From version 1.5 upwards, the API authentication is no longer included.
 
