@@ -9,6 +9,11 @@ abstract class ConsoleTestCase extends TestCase
 {
 
     /**
+     * @var bool 
+     */
+    public $mockConsoleOutput = false;
+
+    /**
      * Returns most recent artisan command output.
      *
      * @return string
