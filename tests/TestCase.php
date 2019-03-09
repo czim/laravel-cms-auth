@@ -4,7 +4,6 @@ namespace Czim\CmsAuth\Test;
 use Czim\CmsAuth\Sentinel\Users\EloquentUser;
 use Czim\CmsCore\Providers\CmsCoreServiceProvider;
 use Czim\CmsCore\Support\Enums\Component;
-use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -150,18 +149,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         // No prefix, due to sqlite memory driver
         return $table;
-    }
-
-    /**
-     * @param array|string $realpath
-     */
-    protected function loadMigrationsFrom($realpath)
-    {
-        $options = is_array($realpath) ? $realpath : ['--realpath' => $realpath];
-
-        $this->artisan('migrate', $options);
-
-        $this->app[ConsoleKernel::class]->setArtisan(null);
     }
 
 }
