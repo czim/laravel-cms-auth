@@ -11,18 +11,26 @@ trait CmsTablePrefixed
      */
     public function getTable()
     {
-        return $this->getCmsTablePrefix() . parent::getTable();
+        $tablePrefix = $this->getCmsTablePrefix();
+        $tableName   = parent::getTable();
+
+        if ($this->isPrefixed($tablePrefix, $tableName)) {
+            return $tableName;
+        }
+
+        return $tablePrefix . $tableName;
     }
 
     /**
-     * Override to force the database connection
-     *
-     * {@inheritdoc}
+     * @param string $tablePrefix
+     * @param string $tableName
+     * @return false|int
      */
-    public function getConnectionName()
+    protected function isPrefixed(string $tablePrefix, string $tableName)
     {
-        return $this->getCmsDatabaseConnection() ?: $this->connection;
+        return preg_match("/^{$tablePrefix}/", $tableName);
     }
+
 
     /**
      * @return string
