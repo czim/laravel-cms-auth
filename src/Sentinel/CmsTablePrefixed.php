@@ -24,11 +24,11 @@ trait CmsTablePrefixed
     /**
      * @param string $tablePrefix
      * @param string $tableName
-     * @return false|int
+     * @return bool
      */
     protected function isPrefixed(string $tablePrefix, string $tableName)
     {
-        return preg_match("/^{$tablePrefix}/", $tableName);
+        return (bool) preg_match("/^{$tablePrefix}/", $tableName);
     }
 
 
